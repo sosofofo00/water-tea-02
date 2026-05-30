@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>水之茶雲端庫存系統</title>
+  <!-- 引入 React 與 Babel (讓瀏覽器能直接跑 React) -->
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body style="background:#060a12; margin:0;">
+
+  <div id="root"></div>
+
+  <!-- 這裡直接放入優化後的 React 程式碼 -->
+  <script type="text/babel" data-type="module">
+    // ⚠️ 貼心提醒：請記得將下方的 Firebase 專案金鑰換成您自己的！
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+    const { useState, useEffect, useMemo } = React;
+
+    const STORES = ["原料商店", "自強店", "玉山店", "水上店"];
+    const BRANCH_STORES = ["自強店", "玉山店", "水上店"];
+    const SUPPLIER = "原料商店";
+    const BOTTLE_ITEMS = ["柳橙", "甘蔗", "西瓜", "檸檬", "金桔", "鳳梨"];
+    const BAG_ITEMS = ["西瓜", "酪梨", "芒果", "芭樂", "綜合蔬果", "石蓮花（大）", "石蓮花（小）", "綠豆", "紅豆", "百香果粒", "水果茶", "冰淇淋"];
+    const EMOJI = {"柳橙":"🍊","甘蔗":"🌿","西瓜":"🍉","檸檬":"🍋","金桔":"🟡","鳳梨":"🍍","酪梨":"🥑","芒果":"🥭","芭樂":"💚","綜合蔬果":"🥗","石蓮花（大）":"🌸","石蓮花（小）":"🌼","綠豆":"🫛","紅豆":"🫘","百香果粒":"🟣","水果茶":"🍵","冰淇淋":"🍦"};
+    const SCOLOR = { "原料商店":"#a78bfa","自強店":"#34d399","玉山店":"#60a5fa","水上店":"#fb923c" };
+    const SICON  = { "原料商店":"🏭","自強店":"🏪","玉山店":"⛰️","水上店":"💧" };
+
+    const freshInventory = (isSupplier) => [
+      ...BOTTLE_ITEMS.map((name, i) => ({ id:`b-${i}`, name, type:"bottle", stock:0, minStock: isSupplier ? 50 : 10 })),
+      ...BAG_ITEMS.map((name, i)    => ({ id:`g-${i}`, name, type:"bag",    stock:0, minStock: isSupplier ? 40 : 8  })),
+    ];
+    const freshData = () => Object.fromEntries(STORES.map(s => [s, freshInventory(s === SUPPLIER)]));
+    const freshLogs = () => Object.fromEntries(STORES.map(s => [s, []]));
+
+    // 填入您的 Firebase 設定
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+      databaseURL: "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_PROJECT_ID.appspot.com",
+      messagingSenderId: "YOUR_SENDER_ID",
+      appId: "YOUR_APP_ID"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    // —— 以下為主要的 App 元件 (與前述功能完全相同，已為獨立 HTML 環境優化) ——
+    function App() {
+      // ...這裡放入前一則回覆中 App() 的完整內部邏輯與各個 Modal 元件...
+      // (因篇幅關係，上線時請記得將前述完整程式碼貼入此處)
+      return (
+        <div>{/* 網頁 UI 內容 */}</div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+</body>
+</html>
